@@ -40,4 +40,17 @@ public class PlayerTests {
         Assert.assertEquals((characterList.size() + 1), (newCharacterList.size()));
 
     }
+
+    @Test
+    public void fight_twoFighters_ShouldHaveAWinnerAndALooser() {
+        //arrange
+        GameCharacter fighter = new GameCharacter("Jon snow", 30, 200, 10);
+        GameCharacter rival = new GameCharacter("Joffery Lannister", 20, 180, 0);
+
+        //act
+        player.fight(fighter, rival);
+
+        //asserts
+        Assert.assertTrue((fighter.getHealth() <= 0 || rival.getHealth() <= 0));
+    }
 }

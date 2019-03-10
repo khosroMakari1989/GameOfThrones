@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 public class Player {
 
     private static final Logger LOGGER = Logger.getLogger(Player.class.getName());
+    Fight fight = new Fight();
 
     //save it to file
     public void createCharacter(GameCharacter character) throws IOException, URISyntaxException {
@@ -34,8 +35,11 @@ public class Player {
 
     }
 
-    public void fight() {
-
+    public void fight(GameCharacter fighter, GameCharacter rival) {
+        fight.start(fighter, rival);
+        String winner = fighter.getHealth() > 0 ? fighter.getFullname() : rival.getFullname();
+        System.out.println("Winner is " + winner);
+        System.out.println("Dead may never die!");
     }
 
     public void saveGame() {

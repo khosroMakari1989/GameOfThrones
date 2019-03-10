@@ -1,6 +1,7 @@
 package com.example.game;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
@@ -12,56 +13,73 @@ public class Fight {
 
     private static final int minumumActions = 10;
 
-    public static void fight(GameCharacter fighter, GameCharacter river) {
+    public void start(GameCharacter fighter, GameCharacter rival) {
         Random random = new Random();
-        int numberOfActions = random.nextInt(10) + minumumActions;
-
-        for (int i = 0; i <= numberOfActions; i++) {
+        //int numberOfActions = random.nextInt(10) + minumumActions;
+        fighter.setHealth(GameCharacter.BASIC_FIGHTER_HEALTH + fighter.getExperience() * 10);
+        rival.setHealth(GameCharacter.BASIC_FIGHTER_HEALTH + rival.getExperience() * 10);
+        while (fighter.getHealth() > 0 && rival.getHealth() > 0) {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                System.out.println("Failed to make delay between actions!");
+            }
             int existingActionsCount = CombatAction.values().length;
             int ordinal = random.nextInt(existingActionsCount);
-            CombatAction combatAction = Stream.of(CombatAction.values()).filter(action -> action.ordinal() == ordinal).findFirst().get();
+            CombatAction combatAction = Stream.of(CombatAction.values())
+                    .filter(action -> action.ordinal() == ordinal)
+                    .findFirst()
+                    .get();
 
             switch (random.nextInt(2)) {
                 case 0:
-                    beat(fighter, river, combatAction);
+                    beat(fighter, rival, combatAction);
                     break;
                 case 1:
-                    beat(river, fighter, combatAction);
+                    beat(rival, fighter, combatAction);
                     break;
             }
         }
 
     }
 
-    public static void beat(GameCharacter fighter, GameCharacter river, CombatAction action) {
-
+    private void beat(GameCharacter fighter, GameCharacter rival, CombatAction action) {
+        rival.setHealth(rival.getHealth() - CombatAction.KICK.weight());
         switch (action) {
             case KICK:
-                kick(fighter, river);
+                kick(fighter, rival);
                 break;
             case PUNCH:
-                punch(fighter, river);
+                punch(fighter, rival);
                 break;
             case KNOCKDOWN:
-                knockDown(fighter, river);
+                knockDown(fighter, rival);
                 break;
             case KNOCKOUT:
-                knockOut(fighter, river);
+                knockOut(fighter, rival);
+                rival.setHealth(-1);
                 break;
         }
     }
 
-    public static void kick(GameCharacter fighter, GameCharacter river) {
+    private static void kick(GameCharacter fighter, GameCharacter rival) {
+        System.out.println(fighter.getFullname() + " is Kicking " + rival.getFullname());
 
     }
 
-    public static void punch(GameCharacter fighter, GameCharacter river) {
+    private void punch(GameCharacter fighter, GameCharacter rival) {
+        System.out.println(fighter.getFullname() + " is Punching " + rival.getFullname());
 
     }
 
-    public static void knockDown(GameCharacter fighter, GameCharacter river) {
+    private void knockDown(GameCharacter fighter, GameCharacter rival) {
+        System.out.println(fighter.getFullname() + " is Knocking down " + rival.getFullname());
+
     }
 
-    public static void knockOut(GameCharacter fighter, GameCharacter river) {
+    private void knockOut(GameCharacter fighter, GameCharacter rival) {
+        System.out.println(fighter.getFullname() + " is Knocking out " + rival.getFullname());
+
     }
 }

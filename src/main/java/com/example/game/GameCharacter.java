@@ -17,6 +17,7 @@ public class GameCharacter {
     private int height;
     //numberof fights will increase the fighter's experience
     private int experience;
+    private transient int health;
 
     public GameCharacter(String fullname, int age, int height, int experience) {
         this.fullname = fullname;
@@ -55,6 +56,14 @@ public class GameCharacter {
 
     public void setExperience(int experience) {
         this.experience = experience;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     @Override

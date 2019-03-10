@@ -6,7 +6,7 @@ package com.example.game;
  * @author khosro.makari@gmail.com
  */
 public enum CombatAction {
-    KICK(10), PUNCH(20), KNOCKDOWN(100), KNOCKOUT(50);
+    KICK(10), PUNCH(10), KNOCKDOWN(30), KNOCKOUT(-1);//KNOCKOUT means that the game is finished
 
     private int weight;
 

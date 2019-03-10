@@ -2,6 +2,7 @@ package com.example.game;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -49,7 +50,27 @@ public class Application {
                 player.explorer().forEach(System.out::println);
                 break;
             case "3":
+                List<String> fighters = player.explorer();
+                for (int i = 0; i < fighters.size(); i++) {
+                    System.out.println(i + 1 + "- " + fighters.get(i).substring(0, fighters.get(i).indexOf(',')));
+                }
+
+                System.out.println("Choose two of your favorite characters by their number and start the fight!");
+                int fighterNumber = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println("Now select the rival!");
+                int rivalNumber = scanner.nextInt();
+                scanner.nextLine();
+                String[] fighterInfo = fighters.get(fighterNumber - 1).split(", ");
+                String[] rivalInfo = fighters.get(rivalNumber - 1).split(", ");
+                player.fight(extractGameCharacterInfo(fighterInfo), extractGameCharacterInfo(rivalInfo));
+
+            //player.fight();
             case "4":
         }
+    }
+
+    private GameCharacter extractGameCharacterInfo(String[] info) {
+        return new GameCharacter(info[0], Integer.valueOf(info[1]), Integer.valueOf(info[2]), Integer.valueOf(info[3]));
     }
 }
