@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class Application {
 
-    private static final String MENU_CHOICES = "1234";
+    private static final String MENU_CHOICES = "123456";
     private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
     private final Player player = new Player();
 
@@ -22,16 +22,22 @@ public class Application {
         System.out.println("1- Create a character");
         System.out.println("2- Explorer Characters");
         System.out.println("3- Fight");
+        System.out.println("4- Pause");
+        System.out.println("5- Resume");
+        System.out.println("6- Exit");
+        boolean exit = false;
+        while (!exit) {
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
+            exit = application.handleSelectMenu(input, scanner);
 
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        application.handleSelectMenu(input, scanner);
+        }
     }
 
-    private void handleSelectMenu(String choice, Scanner scanner) throws IOException, URISyntaxException {
+    private boolean handleSelectMenu(String choice, Scanner scanner) throws IOException, URISyntaxException {
         if (choice.isEmpty() || choice.length() != 1 || !MENU_CHOICES.contains(choice)) {
             System.out.println("Wrong input.");
-            return;
+            return true;
         }
         switch (choice) {
             case "1":
@@ -63,11 +69,19 @@ public class Application {
                 scanner.nextLine();
                 String[] fighterInfo = fighters.get(fighterNumber - 1).split(", ");
                 String[] rivalInfo = fighters.get(rivalNumber - 1).split(", ");
+
                 player.fight(extractGameCharacterInfo(fighterInfo), extractGameCharacterInfo(rivalInfo));
 
             //player.fight();
             case "4":
+                break;
+            case "5":
+                break;
+            case "6":
+                return true;
+
         }
+        return false;
     }
 
     private GameCharacter extractGameCharacterInfo(String[] info) {

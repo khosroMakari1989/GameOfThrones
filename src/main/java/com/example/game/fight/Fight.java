@@ -1,5 +1,9 @@
-package com.example.game;
+package com.example.game.fight;
 
+import com.example.game.CombatAction;
+import com.example.game.GameCharacter;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -9,18 +13,22 @@ import java.util.stream.Stream;
  *
  * @author khosro.makari@gmail.com
  */
-public class Fight {
+public class Fight implements PropertyChangeListener {
 
-    private static final int minumumActions = 10;
+    private FightEvent fightEvent = FightEvent.STARTED;
+    private final Random random = new Random();
 
     public void start(GameCharacter fighter, GameCharacter rival) {
-        Random random = new Random();
-        //int numberOfActions = random.nextInt(10) + minumumActions;
-        fighter.setHealth(GameCharacter.BASIC_FIGHTER_HEALTH + fighter.getExperience() * 10);
-        rival.setHealth(GameCharacter.BASIC_FIGHTER_HEALTH + rival.getExperience() * 10);
+
         while (fighter.getHealth() > 0 && rival.getHealth() > 0) {
             try {
                 TimeUnit.SECONDS.sleep(3);
+                System.out.println("Fight event after 3 seconds sleep:" + fightEvent.name());
+                if (fightEvent == FightEvent.PAUSED) {
+                    System.out.println("Game is paused!");
+                    return;
+
+                }
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 System.out.println("Failed to make delay between actions!");
@@ -41,7 +49,8 @@ public class Fight {
                     break;
             }
         }
-
+        System.out.println("Fight is over!");
+        setFightEvent(FightEvent.OVER);
     }
 
     private void beat(GameCharacter fighter, GameCharacter rival, CombatAction action) {
@@ -56,10 +65,10 @@ public class Fight {
             case KNOCKDOWN:
                 knockDown(fighter, rival);
                 break;
-            case KNOCKOUT:
-                knockOut(fighter, rival);
-                rival.setHealth(-1);
-                break;
+//            case KNOCKOUT:
+//                knockOut(fighter, rival);
+//                rival.setHealth(-1);
+//                break;
         }
     }
 
@@ -82,4 +91,20 @@ public class Fight {
         System.out.println(fighter.getFullname() + " is Knocking out " + rival.getFullname());
 
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent event) {
+        this.fightEvent = (FightEvent) event.getNewValue();
+        System.out.println("Observable is changed to: " + fightEvent.name());
+    }
+
+    public FightEvent getFightEvent() {
+        return fightEvent;
+    }
+
+    public void setFightEvent(FightEvent fightEvent) {
+        this.fightEvent = fightEvent;
+        System.out.println("Game is " + fightEvent.name());
+    }
+
 }
