@@ -20,7 +20,7 @@ public class Application {
     public static void main(String[] args) throws IOException, URISyntaxException {
         System.out.println("BathPath is: " + FileUtil.BASE_PATH);
         Application application = new Application();
-        System.out.println("please select:");
+        System.out.println("please select a number:");
         System.out.println("1- Create a character");
         System.out.println("2- Explorer Characters");
         System.out.println("3- Fight");
@@ -29,6 +29,7 @@ public class Application {
         System.out.println("6- Exit");
         boolean exit = false;
         while (!exit) {
+            System.out.println("#######################################################################################");
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
             exit = application.handleSelectMenu(input, scanner);
@@ -45,13 +46,13 @@ public class Application {
             case "1":
                 System.out.println("Enter name: ");
                 String name = scanner.nextLine();
-                System.out.println("Enter age: ");
-                int age = scanner.nextInt();
+                System.out.println("Enter kick weight(between 1 to 3): ");
+                int kickWeight = scanner.nextInt();
                 scanner.nextLine();
-                System.out.println("Enter height: ");
-                int height = scanner.nextInt();
+                System.out.println("Enter punch weight(between 1 to 3): ");
+                int punchWeight = scanner.nextInt();
                 scanner.nextLine();
-                player.createCharacter(new GameCharacter(name, age, height, 0));
+                player.createCharacter(new GameCharacter(name, kickWeight, punchWeight, 0));
                 System.out.println("Game Character is created successfully!");
                 break;
             case "2":
@@ -62,7 +63,7 @@ public class Application {
                 for (int i = 0; i < fighters.size(); i++) {
                     System.out.println(i + 1 + "- " + fighters.get(i).substring(0, fighters.get(i).indexOf(',')));
                 }
-
+                System.out.println("#######################################################################################");
                 System.out.println("Choose two of your favorite characters by their number and start the fight!");
                 int fighterNumber = scanner.nextInt();
                 scanner.nextLine();
@@ -71,7 +72,6 @@ public class Application {
                 scanner.nextLine();
                 String[] fighterInfo = fighters.get(fighterNumber - 1).split(", ");
                 String[] rivalInfo = fighters.get(rivalNumber - 1).split(", ");
-
                 player.fight(extractGameCharacterInfo(fighterInfo), extractGameCharacterInfo(rivalInfo));
 
             //player.fight();

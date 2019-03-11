@@ -21,13 +21,12 @@ public class Fight implements PropertyChangeListener {
     public void start(GameCharacter fighter, GameCharacter rival) {
 
         while (fighter.getHealth() > 0 && rival.getHealth() > 0) {
+            System.out.println("#######################################################################################");
             try {
                 TimeUnit.SECONDS.sleep(3);
-                System.out.println("Fight event after 3 seconds sleep:" + fightEvent.name());
                 if (fightEvent == FightEvent.PAUSED) {
                     System.out.println("Game is paused!");
                     return;
-
                 }
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
@@ -49,7 +48,6 @@ public class Fight implements PropertyChangeListener {
                     break;
             }
         }
-        System.out.println("Fight is over!");
         setFightEvent(FightEvent.OVER);
         if (fighter.getHealth() > 0) {
             fighter.setExperience(fighter.getExperience() + 2);
@@ -61,7 +59,6 @@ public class Fight implements PropertyChangeListener {
     }
 
     private void beat(GameCharacter fighter, GameCharacter rival, CombatAction action) {
-        rival.setHealth(rival.getHealth() - CombatAction.KICK.weight());
         switch (action) {
             case KICK:
                 kick(fighter, rival);
@@ -72,31 +69,25 @@ public class Fight implements PropertyChangeListener {
             case KNOCKDOWN:
                 knockDown(fighter, rival);
                 break;
-//            case KNOCKOUT:
-//                knockOut(fighter, rival);
-//                rival.setHealth(-1);
-//                break;
         }
+        System.out.println("#######" + rival.getFullname() + " :The health has been reduced to : " + rival.getHealth());
     }
 
     private static void kick(GameCharacter fighter, GameCharacter rival) {
+        rival.setHealth(rival.getHealth() - CombatAction.KICK.weight() * fighter.getKickWeight());
         System.out.println(fighter.getFullname() + " is Kicking " + rival.getFullname());
 
     }
 
     private void punch(GameCharacter fighter, GameCharacter rival) {
+        rival.setHealth(rival.getHealth() - CombatAction.PUNCH.weight() * fighter.getPunchWeight());
         System.out.println(fighter.getFullname() + " is Punching " + rival.getFullname());
 
     }
 
     private void knockDown(GameCharacter fighter, GameCharacter rival) {
+        rival.setHealth(rival.getHealth() - CombatAction.KNOCKDOWN.weight());
         System.out.println(fighter.getFullname() + " is Knocking down " + rival.getFullname());
-
-    }
-
-    private void knockOut(GameCharacter fighter, GameCharacter rival) {
-        System.out.println(fighter.getFullname() + " is Knocking out " + rival.getFullname());
-
     }
 
     @Override

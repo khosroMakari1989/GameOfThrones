@@ -1,37 +1,41 @@
 package com.example.game;
 
 /**
- * characters of Game of Thrones
- *
- * numbers 0-9 for player 1 keys for player 2
+ * A game character entity.
  *
  * @author khosro.makari@gmail.com
  */
 public class GameCharacter {
 
-    // by default every fighter holds 100 score as the health.
-    // This number will be increased by gaining experience through each fight
+    /**
+     * by default every fighter holds 100 score as the health. This number will
+     * be increased by gaining experience through each fight.
+     *
+     */
     public static final int BASIC_FIGHTER_HEALTH = 100;
     private String fullname;
-    private int age;
-    private int height;
-    //numberof fights will increase the fighter's experience
+    private int kickWeight; // a number between 1 to 3
+    private int punchWeight;// a number between 1 to 3
+    /**
+     * numbe rof fights will increase the fighter's experience. Each win brings
+     * 2 score as experience. Each loose brings 1 score as experience*
+     */
     private int experience;
     private transient int health;
 
-    public GameCharacter(String fullname, int age, int height, int experience) {
+    public GameCharacter(String fullname, int kickWeight, int height, int experience) {
         this.fullname = fullname;
-        this.age = age;
-        this.height = height;
+        this.kickWeight = kickWeight;
+        this.punchWeight = height;
         this.experience = experience;
     }
 
-    public int getAge() {
-        return age;
+    public int getKickWeight() {
+        return kickWeight;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setKickWeight(int kickWeight) {
+        this.kickWeight = kickWeight;
     }
 
     public String getFullname() {
@@ -42,12 +46,12 @@ public class GameCharacter {
         this.fullname = fullname;
     }
 
-    public int getHeight() {
-        return height;
+    public int getPunchWeight() {
+        return punchWeight;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setPunchWeight(int punchWeight) {
+        this.punchWeight = punchWeight;
     }
 
     public int getExperience() {
@@ -66,14 +70,24 @@ public class GameCharacter {
         this.health = health;
     }
 
+    /**
+     * Converts String to the Game Character
+     *
+     * @param characterInfo information of the game character as a String
+     * @return the GameCharacter object
+     */
     public static GameCharacter of(String characterInfo) {
         String[] info = characterInfo.split(", ");
         return new GameCharacter(info[0], Integer.valueOf(info[1]), Integer.valueOf(info[2]), Integer.valueOf(info[3]));
-
     }
 
+    /**
+     * Represents the game character information as a single String
+     *
+     * @return the information of the game character
+     */
     @Override
     public String toString() {
-        return (this.fullname + ", " + this.age + ", " + this.height + ", " + this.experience);
+        return (this.fullname + ", " + this.kickWeight + ", " + this.punchWeight + ", " + this.experience);
     }
 }

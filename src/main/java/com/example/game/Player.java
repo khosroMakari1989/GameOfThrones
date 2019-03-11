@@ -59,9 +59,9 @@ public class Player {
         new Thread(task).start();
 
         while (fight.getFightEvent() != FightEvent.OVER) {
+            System.out.println("#######################################################################################");
             String key = scanner.nextLine();
 
-            System.out.println("entered key is:" + key);
             if (key.equals("P")) {
                 observable.setFightEvent(FightEvent.PAUSED);
             }
@@ -74,7 +74,6 @@ public class Player {
             //key = scanner.nextLine();
 
         }
-        System.out.println("fight is overrrrrrrrrrr in player");
         String winner = fighter.getHealth() > 0 ? fighter.getFullname() : rival.getFullname();
         String looser = fighter.getHealth() > 0 ? rival.getFullname() : fighter.getFullname();
         System.out.println("Winner is " + winner);
