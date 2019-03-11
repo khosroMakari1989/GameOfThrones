@@ -1,7 +1,7 @@
-Arya Stark, 25, 200, 0
+Arya Stark, 25, 200, 2
 Jaime Lannister, 26, 200, 0
 Gregor Clegane (Mountain), 27, 200, 0
-Bronn, 28, 200, 0
+Bronn, 28, 200, 1
 Robert Baratheon, 29, 200, 0
 Barristan Selmy, 29, 200, 0
 Khal Drogo, 30, 200, 0
@@ -10,3 +10,8 @@ Ramsay Bolton, 32, 200, 0
 Eddard Stark, 33, 200, 0
 Tormund Giantsbane, 34, 200, 0
 Arthur Dayne, 35, 200, 0
+Red Woman, 40, 160, 0
+Steve, 28, 180, 0
+we, 1, 1, 0
+sds, 1, 1, 0
+Red woman, 35, 180, 0

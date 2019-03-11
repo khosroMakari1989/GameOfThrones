@@ -1,5 +1,6 @@
 package com.example.game;
 
+import com.example.game.utils.FileUtil;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Application {
     private final Player player = new Player();
 
     public static void main(String[] args) throws IOException, URISyntaxException {
+        System.out.println("BathPath is: " + FileUtil.BASE_PATH);
         Application application = new Application();
         System.out.println("please select:");
         System.out.println("1- Create a character");
