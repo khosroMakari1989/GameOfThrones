@@ -1,6 +1,7 @@
 package com.example.game.utils;
 
 /**
+ * Constants of the project
  *
  * @author khosro.makari@gmail.com
  */

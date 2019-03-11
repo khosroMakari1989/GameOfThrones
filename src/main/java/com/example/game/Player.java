@@ -6,21 +6,27 @@ import com.example.game.fight.FightObservable;
 import com.example.game.utils.Constant;
 import com.example.game.utils.FileUtil;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Logger;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * This class contains features which a player can use them to control the game
  *
  * @author khosro.makari@gmail.com
  */
 public class Player {
 
-    private static final Logger LOGGER = Logger.getLogger(Player.class.getName());
-    Fight fight = new Fight();
+    /**
+     * In order to handle the pause and resume feature('P' and 'R' as input), a
+     * new thread is needed. Using executersService will handle the lifecycles
+     * of threads.
+     */
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final Fight fight = new Fight();
 
     /**
      * Saves the game character to the file
@@ -29,7 +35,6 @@ public class Player {
      * @throws IOException
      */
     public void createCharacter(GameCharacter character) throws IOException {
-        //    Files.write(Paths.get(ClassLoader.getSystemResource("characters.txt").toURI()), character.toString().getBytes(), APPEND);
         FileUtil.appendToFile(Constant.GAME_CHARACTERS_FILE_NAME, character.toString());
     }
 
@@ -40,23 +45,38 @@ public class Player {
      * @throws IOException
      */
     public List<String> explorer() throws IOException {
-        //        return Files.readAllLines(Paths.get(ClassLoader.getSystemResource("characters.txt").toURI()));
-//        try (Stream<String> stream = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("characters.txt"))).lines();) {
-//            return stream.collect(Collectors.toList());
-//        }
         return FileUtil.readLines(Constant.GAME_CHARACTERS_FILE_NAME);
     }
 
-    public void fight(GameCharacter fighter, GameCharacter rival) throws IOException, URISyntaxException {
+    /**
+     * Handles the fight between two game characters. This method uses
+     * multi-threading in order to create a seperate thread to handle the PAUSE
+     * and RESUME featrues of the fight. It also uses Observer design pattern to
+     * publish the change to FightEvent property of the Observable to the
+     * observer classes.
+     *
+     * When a fight is paused, observable will publish this status, Fight class
+     * will be informed and will pause the fight via exiting the method. When a
+     * fight is resumed, observable will publish this status, Fight class will
+     * be informed and will resume the game again. It also sets the Health of
+     * the fighters, based on the Default Health property in the GameCharacter
+     * class and based on the experience of each fighter.
+     *
+     * The key 'P' pauses the game. The key 'R' resumes the game
+     *
+     * @param fighter to fight to the rival
+     * @param rival to fight to the fighter
+     * @throws IOException
+     */
+    public void fight(GameCharacter fighter, GameCharacter rival) throws IOException {
         FightObservable observable = new FightObservable();
         observable.addPropertyChangeListener(fight);
         fighter.setHealth(GameCharacter.BASIC_FIGHTER_HEALTH + fighter.getExperience() * 10);
         rival.setHealth(GameCharacter.BASIC_FIGHTER_HEALTH + rival.getExperience() * 10);
-
         Scanner scanner = new Scanner(System.in);
 
         Runnable task = () -> fight.start(fighter, rival);
-        new Thread(task).start();
+        executorService.execute(task);
 
         while (fight.getFightEvent() != FightEvent.OVER) {
             System.out.println("#######################################################################################");
@@ -68,11 +88,9 @@ public class Player {
 
             if (key.equals("R")) {
                 observable.setFightEvent(FightEvent.RESUMED);
-                System.out.println("game is resumed");
-                new Thread(task).start();
+                System.out.println("Game is resumed");
+                executorService.execute(task);
             }
-            //key = scanner.nextLine();
-
         }
         String winner = fighter.getHealth() > 0 ? fighter.getFullname() : rival.getFullname();
         String looser = fighter.getHealth() > 0 ? rival.getFullname() : fighter.getFullname();
@@ -89,8 +107,7 @@ public class Player {
      * @param winner the winner fighter
      * @param looser the looser fighter
      */
-    private void raiseExperience(String winner, String looser) throws IOException, URISyntaxException {
-//        try (Stream<String> stream = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("characters.txt"))).lines();) {
+    private void raiseExperience(String winner, String looser) throws IOException {
         try (Stream<String> stream = FileUtil.readLines(Constant.GAME_CHARACTERS_FILE_NAME).stream();) {
             List<String> gameCharacters = stream.map(str -> GameCharacter.of(str)).map(gameCharacter -> {
                 if (gameCharacter.getFullname().equals(winner)) {
@@ -102,9 +119,7 @@ public class Player {
                 return gameCharacter;
             }).map(gameCharacter -> gameCharacter.toString()).collect(Collectors.toList());
             FileUtil.updateFile(Constant.GAME_CHARACTERS_FILE_NAME, gameCharacters);
-//            Files.write(Paths.get(ClassLoader.getSystemResource("characters.txt").toURI()), gameCharacters, StandardOpenOption.TRUNCATE_EXISTING);
         }
-
     }
 
 }

@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * This util class handles the operations on a file
  *
  * @author khosro.makari@gmail.com
  */

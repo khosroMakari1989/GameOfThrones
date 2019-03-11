@@ -9,7 +9,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
- * default health is 100 for players
+ * Handles the fight feature of the game and acts as an Observer to find out
+ * when the FightEvent is changes, in order to pause the game. Resuming the game
+ * is handled outside of this class just by reinvoking the start method.
  *
  * @author khosro.makari@gmail.com
  */
@@ -18,6 +20,20 @@ public class Fight implements PropertyChangeListener {
     private FightEvent fightEvent = FightEvent.STARTED;
     private final Random random = new Random();
 
+    /**
+     * starts fighting between the given fighters. Between each action, the
+     * program sleeps a couple of seconds to make the game more real. Then, it
+     * checks if the FightEvent status is changed by the observable class.
+     *
+     * It uses Random class to generate random actions and to determine the
+     * fighter or rival.
+     *
+     * Finally it passes the result to the beat method to handle that who is
+     * beating the other one with which action.
+     *
+     * @param fighter to fight to the rival
+     * @param rival to fight to the fighter
+     */
     public void start(GameCharacter fighter, GameCharacter rival) {
 
         while (fighter.getHealth() > 0 && rival.getHealth() > 0) {
@@ -93,7 +109,6 @@ public class Fight implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         this.fightEvent = (FightEvent) event.getNewValue();
-        System.out.println("Observable is changed to: " + fightEvent.name());
     }
 
     public FightEvent getFightEvent() {

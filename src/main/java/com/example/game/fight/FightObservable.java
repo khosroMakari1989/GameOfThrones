@@ -4,6 +4,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
+ * Observable class which contains a GameAction to publish it when changes.
+ *
  *
  * @author khosro.makari@gmail.com
  */
