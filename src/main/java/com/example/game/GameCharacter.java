@@ -66,6 +66,12 @@ public class GameCharacter {
         this.health = health;
     }
 
+    public static GameCharacter of(String characterInfo) {
+        String[] info = characterInfo.split(", ");
+        return new GameCharacter(info[0], Integer.valueOf(info[1]), Integer.valueOf(info[2]), Integer.valueOf(info[3]));
+
+    }
+
     @Override
     public String toString() {
         return (this.fullname + ", " + this.age + ", " + this.height + ", " + this.experience);

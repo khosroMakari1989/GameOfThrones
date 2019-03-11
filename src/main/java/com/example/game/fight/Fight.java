@@ -51,6 +51,13 @@ public class Fight implements PropertyChangeListener {
         }
         System.out.println("Fight is over!");
         setFightEvent(FightEvent.OVER);
+        if (fighter.getHealth() > 0) {
+            fighter.setExperience(fighter.getExperience() + 2);
+            rival.setExperience(rival.getExperience() + 1);
+        } else {
+            fighter.setExperience(fighter.getExperience() + 1);
+            rival.setExperience(rival.getExperience() + 2);
+        }
     }
 
     private void beat(GameCharacter fighter, GameCharacter rival, CombatAction action) {

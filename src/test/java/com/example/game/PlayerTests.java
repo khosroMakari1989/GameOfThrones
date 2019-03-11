@@ -42,7 +42,7 @@ public class PlayerTests {
     }
 
     @Test
-    public void fight_twoFighters_ShouldHaveAWinnerAndALooser() {
+    public void fight_TwoFighters_ShouldHaveAWinnerAndALooser() throws IOException, URISyntaxException {
         //arrange
         GameCharacter fighter = new GameCharacter("Jon snow", 30, 200, 10);
         GameCharacter rival = new GameCharacter("Joffery Lannister", 20, 180, 0);
@@ -52,5 +52,21 @@ public class PlayerTests {
 
         //asserts
         Assert.assertTrue((fighter.getHealth() <= 0 || rival.getHealth() <= 0));
+    }
+
+    @Test
+    public void fight_TwoFighters_ShouldGainExperience() throws IOException, URISyntaxException {
+        //arrange
+        int fighterExperience = 10;
+        int rivalExperience = 1;
+        GameCharacter fighter = new GameCharacter("Jon snow", 30, 200, 10);
+        GameCharacter rival = new GameCharacter("Joffery Lannister", 20, 180, 0);
+
+        //act
+        player.fight(fighter, rival);
+
+        //asserts
+        Assert.assertTrue(fighter.getExperience() > fighterExperience);
+        Assert.assertTrue(rival.getExperience() > rivalExperience);
     }
 }

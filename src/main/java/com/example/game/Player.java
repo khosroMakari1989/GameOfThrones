@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import static java.nio.file.StandardOpenOption.APPEND;
 import java.util.List;
 import java.util.Scanner;
@@ -39,7 +40,7 @@ public class Player {
 
     }
 
-    public void fight(GameCharacter fighter, GameCharacter rival) {
+    public void fight(GameCharacter fighter, GameCharacter rival) throws IOException, URISyntaxException {
         FightObservable observable = new FightObservable();
         observable.addPropertyChangeListener(fight);
         fighter.setHealth(GameCharacter.BASIC_FIGHTER_HEALTH + fighter.getExperience() * 10);
@@ -68,16 +69,32 @@ public class Player {
         }
         System.out.println("fight is overrrrrrrrrrr in player");
         String winner = fighter.getHealth() > 0 ? fighter.getFullname() : rival.getFullname();
+        String looser = fighter.getHealth() > 0 ? rival.getFullname() : fighter.getFullname();
         System.out.println("Winner is " + winner);
         System.out.println("Dead may never die!");
+        raiseExperience(winner, looser);
+    }
+
+    /**
+     * add 2 score for winner add 1 score for looser
+     *
+     * @param winner
+     * @param looser
+     */
+    private void raiseExperience(String winner, String looser) throws IOException, URISyntaxException {
+        try (Stream<String> stream = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("characters.txt"))).lines();) {
+            List<String> gameCharacters = stream.map(str -> GameCharacter.of(str)).map(gameCharacter -> {
+                if (gameCharacter.getFullname().equals(winner)) {
+                    gameCharacter.setExperience(gameCharacter.getExperience() + 2);
+                }
+                if (gameCharacter.getFullname().equals(looser)) {
+                    gameCharacter.setExperience(gameCharacter.getExperience() + 1);
+                }
+                return gameCharacter;
+            }).map(gameCharacter -> gameCharacter.toString()).collect(Collectors.toList());
+            Files.write(Paths.get(ClassLoader.getSystemResource("characters.txt").toURI()), gameCharacters, StandardOpenOption.TRUNCATE_EXISTING);
+        }
 
     }
 
-    public void saveGame() {
-
-    }
-
-    public void resumeGame() {
-
-    }
 }
