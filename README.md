@@ -1,7 +1,9 @@
 # Game Of Thrones
 A simple java console game to simulate Game of Thrones series.
 <br />
-This game is designed in a way that can be extended to any combat game.
+This game is designed in a way that can be extended to any combat game, just by renaming the project and
+<br />
+changing the default game characters in the data/characters.txt file!
 <br />
 A player can use the following features:
 <br />
