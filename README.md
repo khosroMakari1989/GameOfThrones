@@ -7,19 +7,19 @@ A player can use the following features:
 <br />
 <ul>
 <li>
-1- Create a Game Character
+ Create a Game Character
 </li>
 <li>
-2- Display Game Characters
+ Display Game Characters
 </li>
 <li>
-3- Fight
+ Fight
 </li>
 <li>
-4- Pause and Resume the Game
+ Pause and Resume the Game
 </li>
 <li>
-5- Increase Experience through fighting
+ Increase Experience through fighting
 </li>
 </ul>
 
@@ -50,6 +50,7 @@ Junit Testing
 This projcet is based on the Apache Maven build tools. To run it, first you should build it, then run it through the command line.
 <br />
  Go to the project root path through the command line and execute the below command:
+
 `mvn clean package`
 
 Then run the game using:

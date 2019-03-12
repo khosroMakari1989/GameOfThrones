@@ -19,6 +19,10 @@ public class FileUtil {
 
     public static final String BASE_PATH;
 
+    private FileUtil() {
+        throw new IllegalArgumentException();
+    }
+
     /**
      * The path will be a "data" folder beside the project. First it gets the
      * path of jar file, then backwards two folders to reach the data folder in
