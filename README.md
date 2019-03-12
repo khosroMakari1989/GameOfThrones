@@ -24,7 +24,8 @@ A player can use the following features:
 </ul>
 
 # Getting Started
-
+By default the famous characters of the Game of Thrones are added to the characters.txt file which is located in the data folder.
+<br />
 Run the project using command line and start enjoying the Game of Thrones!
 <br />
 There is a data folder beside project which contains the chrachters of the game.

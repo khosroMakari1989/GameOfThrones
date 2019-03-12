@@ -11,10 +11,4 @@ Eddard Stark, 1, 1, 0
 Tormund Giantsbane, 1, 1, 0
 Arthur Dayne, 1, 1, 0
 Red Woman, 1, 1, 1
-Red woman, 1, 1, 0
-Red woman, 1, 1, 0
-Red woman, 1, 1, 0
-Red woman, 1, 1, 0
-Red woman, 1, 1, 0
-Red woman, 1, 1, 0
 Steve, 3, 3, 2
